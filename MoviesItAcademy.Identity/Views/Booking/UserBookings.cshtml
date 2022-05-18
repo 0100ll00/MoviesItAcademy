@@ -1,0 +1,56 @@
+﻿@model IEnumerable<MoviesItAcademy.Identity.Models.Dtos.BookingDto>
+
+@{
+    ViewData["Title"] = "UserBookings";
+}
+
+<h1>User Bookings</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <p>Ticket status</p>
+            </th>
+            <th>
+                <p>Title</p>
+            </th>
+            <th>
+                <p>Booked at</p>
+            </th>
+            <th>
+                <p>Starts at</p>
+            </th>
+            <th>
+                <p>Runs out at</p>
+            </th>
+            <th>
+                <p>Action</p>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Movie.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartsAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RunsOutAt)
+            </td>
+            <td>
+                <a asp-action="UnbookAMovie" asp-route-movieId="@item.MovieId" asp-route-userId="@item.UserId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

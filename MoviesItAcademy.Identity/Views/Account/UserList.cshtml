@@ -1,0 +1,36 @@
+﻿@model X.PagedList.IPagedList<MoviesItAcademy.Identity.Models.UserViewModel>
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+
+@{
+    ViewData["Title"] = "UserList";
+}
+<h1>User List</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Bookings</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>
+                    <a asp-controller="Booking" asp-action="UserBookings" asp-route-Id="@user.Id">Manage</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.PagedListPager(Model, p => Url.Action("MovieList", new { p }), new PagedListRenderOptions {
+         DisplayLinkToIndividualPages = true,
+         DisplayPageCountAndCurrentLocation = false,
+         MaximumPageNumbersToDisplay = 10,
+         LiElementClasses = new string[] { "page-item" },
+         PageClasses = new string[] { "page-link" },
+})

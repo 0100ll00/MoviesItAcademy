@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to MoviesItAcademy</h1>
+    @if (User.IsInRole("Administrator"))
+    {
+        <p>Click  <a href="/Movie/MovieList">here</a> for available movies list.</p>
+    }
+    else
+    {
+        <p>Click  <a href="/Movie/MovieList">here</a> for available movies list.</p>
+    }
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <p><a href="/Account/Login">Login</a> or <a href="/Account/Register">register</a> to book a seance or to buy a ticket.</p>
+    }
+</div>

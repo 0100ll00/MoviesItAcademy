@@ -1,0 +1,99 @@
+﻿@model X.PagedList.IPagedList<MoviesItAcademy.Web.Models.Dtos.MovieDto>
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+
+@{
+    ViewData["Title"] = "MovieList";
+}
+
+<h1>Movie List</h1>
+
+@if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+{
+    <p>
+        <a asp-action="AddAMovie">Add a movie</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <p>Title</p>
+            </th>
+            <th>
+                <p>Duration in minutes</p>
+            </th>
+            <th>
+                <p>Year</p>
+            </th>
+            <th>
+                <p>Country</p>
+            </th>
+            <th>
+                <p>Seats</p>
+            </th>
+            <th>
+                <p>Starts</p>
+            </th>
+            @if (User.IsInRole("Administrator"))
+            {
+                <th>
+                    <p>Uploader</p>
+                </th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DurationInMinutes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalSeats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartsAt)
+            </td>
+            @if (User.IsInRole("Administrator"))
+            {
+                 <td>
+                    @Html.DisplayFor(modelItem => item.Uploader)
+                </td>   
+            }
+            <td>
+                @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                {
+                    <a asp-action="UpdateAMovie" asp-route-id="@item.Id">Edit |</a>
+                }
+                <a asp-action="MovieDetails" asp-route-id="@item.Id">Details</a>
+                @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                {
+                    <a asp-action="DeleteAMovieSoft" asp-route-id="@item.Id">| Delete</a>
+                }
+                @if (User.IsInRole("Administrator"))
+                {
+                    <a asp-action="UnpublishAMovie" asp-route-id="@item.Id">| Unpublish</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@Html.PagedListPager(Model, p => Url.Action("MovieList", new { p }), new PagedListRenderOptions {
+         DisplayLinkToIndividualPages = true,
+         DisplayPageCountAndCurrentLocation = false,
+         MaximumPageNumbersToDisplay = 10,
+         LiElementClasses = new string[] { "page-item" },
+         PageClasses = new string[] { "page-link" },
+})

@@ -1,0 +1,80 @@
+﻿@model X.PagedList.IPagedList<MoviesItAcademy.Identity.Models.Dtos.MovieDto>
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+
+@{
+    ViewData["Title"] = "MovieListWithUploaders";
+}
+
+<h1>Archive</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <p>Title</p>
+            </th>
+            <th>
+                <p>Duration in minutes</p>
+            </th>
+            <th>
+                <p>Year</p>
+            </th>
+            <th>
+                <p>Country</p>
+            </th>
+            <th>
+                <p>Seats</p>
+            </th>
+            <th>
+                <p>Starts</p>
+            </th>
+            @if (User.IsInRole("Administrator"))
+            {
+                <th>
+                    <p>Uploader</p>
+                </th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DurationInMinutes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalSeats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartsAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Uploader)
+            </td>
+            <td>
+                <a asp-action="UpdateAMovie" asp-route-id="@item.Id">Edit |</a>
+                <a asp-action="MovieDetails" asp-route-id="@item.Id">Details</a>
+                <a asp-action="DeleteAMovie" asp-route-id="@item.Id">| Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@Html.PagedListPager(Model, p => Url.Action("MovieList", new { p }), new PagedListRenderOptions {
+         DisplayLinkToIndividualPages = true,
+         DisplayPageCountAndCurrentLocation = false,
+         MaximumPageNumbersToDisplay = 10,
+         LiElementClasses = new string[] { "page-item" },
+         PageClasses = new string[] { "page-link" },
+})
